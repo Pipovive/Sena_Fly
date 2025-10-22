@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Asigna un piloto a tu avión!</h2>
+        <h2 class="text-2xl font-bold mb-4">Asigna Operador a tu avión!</h2>
 
         @if ($errors->any())
             <div class="bg-red-100 text-red-700 p-3 mb-4 rounded">
@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="{{ route('aviones.store') }}" method="POST">
+        <form action="{{ route('aviones.asignarStore') }}" method="POST">
             @csrf
 
             <div>

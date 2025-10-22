@@ -14,8 +14,14 @@ class Avion extends Model
     protected $fillable = [
         'modelo',
         'capacidad',
-        'matricula'
+        'matricula',
+        'modelo_avion_id'
     ];
+
+    public function modeloAvion()
+    {
+        return $this->belongsTo(ModeloAvion::class);
+    }
 
     public function vuelos()
     {

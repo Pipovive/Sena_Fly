@@ -31,7 +31,7 @@
             <nav class="mt-6">
                 <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-blue-700">🏠 Dashboard</a>
                 <a href="{{ route('vuelos.index') }}" class="block px-6 py-3 hover:bg-blue-700">🛫 Vuelos</a>
-
+                <a href="{{ route('pasajeros.index') }}" class="block px-6 py-3 hover:bg-blue-700">🛫 Pasajeros</a>
 
 
                 <a href="#" class="block px-6 py-3 hover:bg-blue-700">👤 Usuarios</a>

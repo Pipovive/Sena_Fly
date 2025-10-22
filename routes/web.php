@@ -64,9 +64,9 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index');
-Route::get('/vuelo/create', [VueloController::class, 'create'])->name('vuelos.create');
+
 Route::post('/vuelos/buscar', [VueloController::class, 'buscar'])->name('vuelos.buscar');
-Route::post('/vuelos', [VueloController::class, 'store'])->name('vuelos.store');
+
 require __DIR__.'/auth.php';
 
 
@@ -88,5 +88,12 @@ Route::middleware(['auth', 'rol2'])->group(function () {
     Route::get('/aviones/asignar', [App\Http\Controllers\AvionController::class, 'asignar'])->name('aviones.asignar');
     Route::post('/aviones/asignarStore', [App\Http\Controllers\AvionController::class, 'asignarStore'])->name('aviones.asignarStore');
     Route::get('/aviones/{id}/soft-delete', [App\Http\Controllers\AvionController::class, 'softDelete'])->name('aviones.softDelete');   
+
+    Route::get('/vuelo/create', [VueloController::class, 'create'])->name('vuelos.create');
+    Route::post('/vuelos', [VueloController::class, 'store'])->name('vuelos.store');
+    Route::put('/vuelo/edit' ,[VueloController::class, 'store'])->name('vuelo.edit');
+
+    Route::get('/pasajeros', [App\Http\Controllers\PasajeroController::class, 'index'])->name('pasajeros.index');
+    Route::post('/pasajeros', [App\Http\Controllers\PasajeroController::class, 'store'])->name('pasajeros.store');
 });
 
