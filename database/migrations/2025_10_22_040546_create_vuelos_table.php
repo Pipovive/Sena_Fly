@@ -20,6 +20,7 @@ return new class extends Migration
         $table->time('hora_salida');
         $table->time('hora_llegada')->nullable();
         $table->decimal('precio', 10, 2);
+        $table->enum('estado', ['programado', 'demorado', 'cancelado'])->default('programado');
         $table->timestamps();
     });
 

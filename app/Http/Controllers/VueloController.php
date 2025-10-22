@@ -11,8 +11,14 @@ class VueloController extends Controller
 {
     public function index()
     {
-        $vuelos = Vuelo::with(['ciudadOrigen', 'ciudadDestino', 'avion'])->get();
+        $vuelos = Vuelo::with(['origen', 'destino', 'avion'])->get();
         return view('vuelos.index', compact('vuelos'));
+    }
+
+    public function dashboard()
+    {
+        $vuelos = Vuelo::with(['origen', 'destino', 'avion'])->get();
+        return view('dashboard', compact('vuelos'));
     }
 
     public function create()
@@ -25,29 +31,31 @@ class VueloController extends Controller
 
     public function store(Request $request)
 {
-    // Validar los datos
+
     $request->validate([
-        'codigo_vuelo' => 'required|unique:vuelos,codigo_vuelo',
-        'ciudad_origen_id' => 'required|exists:ciudades,id',
-        'ciudad_destino_id' => 'required|exists:ciudades,id|different:ciudad_origen_id',
-        'fecha_salida' => 'required|date|after_or_equal:today',
-        'fecha_llegada' => 'required|date|after:fecha_salida',
+        'origen_id' => 'required|exists:ciudades,id',
+        'destino_id' => 'required|exists:ciudades,id|different:origen_id',
+        'avion_id'=> 'required|exists:aviones,id',
+        'fecha' => 'required|date|after_or_equal:today',
+        'hora_salida' => 'required',
+        'hora_llegada' => 'required',
         'precio' => 'required|numeric|min:0',
         'estado' => 'required|in:programado,demorado,cancelado'
     ]);
 
-    // Crear el vuelo
+
     Vuelo::create([
-        'codigo_vuelo' => $request->codigo_vuelo,
-        'ciudad_origen_id' => $request->ciudad_origen_id,
-        'ciudad_destino_id' => $request->ciudad_destino_id,
-        'fecha_salida' => $request->fecha_salida,
-        'fecha_llegada' => $request->fecha_llegada,
+        'origen_id' => $request->origen_id,
+        'destino_id' => $request->destino_id,
+        'avion_id' => $request->avion_id,
+        'fecha' => $request->fecha,
+        'hora_salida' => $request->hora_salida,
+        'hora_llegada' => $request->hora_llegada,
         'precio' => $request->precio,
         'estado' => $request->estado,
     ]);
 
-    // Redirigir con mensaje de éxito
+   
     return redirect()->route('vuelos.index')->with('success', 'Vuelo creado correctamente');
 }
 
@@ -67,13 +75,14 @@ class VueloController extends Controller
     public function update(Request $request, Vuelo $vuelo)
     {
         $request->validate([
-            'codigo' => 'required|unique:vuelos,codigo,' . $vuelo->id,
-            'ciudad_origen_id' => 'required|exists:ciudades,id',
-            'ciudad_destino_id' => 'required|exists:ciudades,id',
-            'avion_id' => 'required|exists:aviones,id',
-            'fecha_salida' => 'required|date',
-            'fecha_llegada' => 'required|date|after:fecha_salida',
+            'origen_id' => 'required|exists:ciudades,id',
+            'destino_id' => 'required|exists:ciudades,id|different:origen_id',
+            'avion_id'=> 'required|exists:aviones,id',
+            'fecha' => 'required|date|after_or_equal:today',
+            'hora_salida' => 'required',
+            'hora_llegada' => 'required',
             'precio' => 'required|numeric|min:0',
+            'estado' => 'required|in:programado,demorado,cancelado'
         ]);
 
         $vuelo->update($request->all());
@@ -88,7 +97,23 @@ class VueloController extends Controller
 
 
     }
+    public function buscar(Request $request)
+    {
+        $request->validate([
+            'origen_id' => 'required|exists:ciudades,id',
+            'destino_id' => 'required|exists:ciudades,id|different:origen_id',
+            'fecha' => 'required|date|after_or_equal:today',
+        ]);
 
+        $vuelos = Vuelo::where('origen_id', $request->origen_id)
+            ->where('destino_id', $request->destino_id)
+            ->where('fecha', $request->fecha)
+            ->where('estado', 'programado')
+            ->with(['origen', 'destino', 'avion'])
+            ->get();
+
+        return view('vuelos.index', compact('vuelos'));
+    }
     
 }
 
