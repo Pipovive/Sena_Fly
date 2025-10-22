@@ -1,13 +1,13 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Vuelos')
+@section('title', 'Reservas')
 
 @section('content')
 
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold">Listado de Vuelos</h2>
-        <a href="{{ route('vuelos.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Crear nuevo vuelo
+        <h2 class="text-2xl font-bold">Listado de Reservas</h2>
+        <a href="{{ route('reservas.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Insertar reservas
         </a>
     </div>
 
@@ -16,6 +16,7 @@
             {{ session('success') }}
         </div>
     @endif
+
 
     <table class="min-w-full bg-white rounded shadow">
         <thead>
@@ -29,15 +30,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($vuelos as $vuelo)
+            @foreach ($reservas as $reserva)
                 <tr class="border-b">
-                    <td class="px-4 py-2">{{ $vuelo->id }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->origen->nombre }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->destino->nombre }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->fecha }}</td>
-                    <td class="px-4 py-2">${{ $vuelo->precio }}</td>
+                    <td class="px-4 py-2">{{ $reserva->id }}</td>
+                    <td class="px-4 py-2">{{ $reserva->origen->nombre }}</td>
+                    <td class="px-4 py-2">{{ $reserva->destino->nombre }}</td>
+                    <td class="px-4 py-2">{{ $reserva->fecha }}</td>
+                    <td class="px-4 py-2">${{ $reserva->precio }}</td>
                     <td class="px-4 py-2">
-                        <a href="{{ route('vuelos.edit', $vuelo) }}" class="text-blue-600">Editar</a>
+                        <a href="{{ route('reservas.edit', $reserva) }}" class="text-blue-600">Editar</a>
                     </td>
                 </tr>
             @endforeach

@@ -87,6 +87,7 @@ class ReservaController extends Controller
     public function create(Request $request)
     {
         // Vuelo seleccionado (ej: /reservas/create?vuelo=5)
+
         $vuelo = Vuelo::findOrFail($request->vuelo);
         return view('reservas.create', compact('vuelo'));
     }
