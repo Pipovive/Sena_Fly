@@ -8,12 +8,12 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\AdminReservaController;
 use App\Http\Controllers\VueloPublicController;
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('/');
 // Rutas públicas
-Route::get('/', [VueloPublicController::class, 'buscar'])->name('home');
+// Route::get('/', [VueloPublicController::class, 'buscar'])->name('home');
 Route::post('/vuelos/buscar', [VueloPublicController::class, 'buscarVuelos'])->name('vuelos.buscar');
 Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index.public');
 Route::get('/vuelos/{vuelo}/asientos', [ReservaController::class, 'seleccionarAsientos'])->name('vuelos.asientos');
@@ -39,12 +39,7 @@ Route::post('/pago/{reserva}', [PagoController::class, 'process'])->name('pago.p
 Route::get('/reserva/{codigo}', [ReservaController::class, 'confirmacion'])->name('reserva.confirmacion');
 Route::get('/reserva/{codigo}/pdf', [ReservaController::class, 'pdf'])->name('reserva.pdf');
 Route::get('/reservas/{id}', [ReservaController::class, 'show'])->name('reservas.show');
-// Rutas dashboard (protegidas por middleware)
-Route::middleware(['auth'])->prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('vuelos', VueloController::class);
-    Route::resource('reservas', AdminReservaController::class)->only(['index', 'show']);
-});
+
 
 
 Route::resource('vuelos', VueloController::class);
