@@ -47,15 +47,112 @@
             </nav>
     </aside>
 
-    <!-- Contenido principal -->
+
     <main class="ml-64 w-full p-8">
-        <!-- Título de la sección -->
+
         <div class="mb-6">
             <h1 class="text-3xl font-semibold">@yield('titulo', 'Dashboard')</h1>
             <p class="text-gray-500">@yield('subtitulo', 'Panel de administración')</p>
         </div>
 
-        <!-- Contenido dinámico -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+            <form action="{{ route('vuelos.buscar') }}" method="POST" class="space-y-4">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700">Tipo de vuelo</label>
+                        <select name="tipo_vuelo" id="tipo_vuelo" class="w-full border rounded-md p-2">
+                            <option value="ida">Solo ida</option>
+                            <option value="ida_vuelta">Ida y vuelta</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Número de pasajeros</label>
+                        <select name="pasajeros" class="w-full border rounded-md p-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}">{{ $i }}
+                                    {{ $i == 1 ? 'pasajero' : 'pasajeros' }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Fecha de salida</label>
+                        <input type="date" name="fecha_salida" id="fecha_salida" class="w-full border rounded-md p-2"
+                            required>
+                    </div>
+                    <div id="fecha_regreso_container" class="hidden">
+                        <label class="block text-gray-700">Fecha de regreso</label>
+                        <input type="date" name="fecha_regreso" id="fecha_regreso"
+                            class="w-full border rounded-md p-2">
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                    Buscar vuelos
+                </button>
+            </form>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b">ID</th>
+                            <th class="py-2 px-4 border-b">Origen</th>
+                            <th class="py-2 px-4 border-b">Destino</th>
+                            <th class="py-2 px-4 border-b">Fecha de Salida</th>
+                            <th class="py-2 px-4 border-b">Fecha de Regreso</th>
+                            <th class="py-2 px-4 border-b">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($vuelos as $vuelo)
+                            <tr>
+                                <td class="py-2 px-4 border-b">{{ $vuelo->id }}</td>
+                                <td class="py-2 px-4 border-b">{{ $vuelo->origen }}</td>
+                                <td class="py-2 px-4 border-b">{{ $vuelo->destino }}</td>
+                                <td class="py-2 px-4 border-b">{{ $vuelo->fecha_salida }}</td>
+                                <td class="py-2 px-4 border-b">{{ $vuelo->fecha_regreso }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <a href="#" class="text-blue-600 hover:underline">Ver</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const tipo = document.getElementById('tipo_vuelo');
+                    const regresoContainer = document.getElementById('fecha_regreso_container');
+                    const regresoInput = document.getElementById('fecha_regreso');
+
+                    function toggleRegreso() {
+                        if (tipo.value === 'ida_vuelta') {
+                            regresoContainer.classList.remove('hidden');
+                            regresoInput.required = true;
+                        } else {
+                            regresoContainer.classList.add('hidden');
+                            regresoInput.required = false;
+                            regresoInput.value = '';
+                        }
+                    }
+
+                    tipo.addEventListener('change', toggleRegreso);
+                    toggleRegreso(); // inicial
+                });
+            </script>
+        </div>
+
+        <script>
+            document.querySelector('select[name="tipo_vuelo"]').addEventListener('change', function() {
+                const fechaRegreso = document.querySelector('.fecha-regreso');
+                if (this.value === 'ida_vuelta') {
+                    fechaRegreso.classList.remove('hidden');
+                } else {
+                    fechaRegreso.classList.add('hidden');
+                }
+            });
+        </script>
+
+
         <div class="bg-white shadow-lg rounded-lg p-6">
             @yield('contenido')
         </div>

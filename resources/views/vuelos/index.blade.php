@@ -21,6 +21,8 @@
         <thead>
             <tr class="bg-gray-200">
                 <th class="px-4 py-2">ID</th>
+                <th class="px-4 py-2">Avion</th>
+                <th class="px-4 py-2">Operador</th>
                 <th class="px-4 py-2">Origen</th>
                 <th class="px-4 py-2">Destino</th>
                 <th class="px-4 py-2">Fecha</th>
@@ -32,12 +34,25 @@
             @foreach ($vuelos as $vuelo)
                 <tr class="border-b">
                     <td class="px-4 py-2">{{ $vuelo->id }}</td>
+                    <td class="px-4 py-2">{{ $vuelo->avion->modelo }} ({{ $vuelo->avion->matricula }})</td>
+                    <td class="px-4 py-2">{{ optional($vuelo->origen)->nombre_operador ?? 'Avianca' }}</td>
                     <td class="px-4 py-2">{{ $vuelo->origen->nombre }}</td>
                     <td class="px-4 py-2">{{ $vuelo->destino->nombre }}</td>
                     <td class="px-4 py-2">{{ $vuelo->fecha }}</td>
                     <td class="px-4 py-2">${{ $vuelo->precio }}</td>
                     <td class="px-4 py-2">
                         <a href="{{ route('vuelos.edit', $vuelo) }}" class="text-blue-600">Editar</a>
+                    </td>
+                    <td class="px-4 py-2">
+                        <a href="{{ route('vuelos.edit', $vuelo) }}" class="text-blue-600">Editar</a>
+                    </td>
+                    <td class="px-4 py-2">
+                        <form action="{{ route('vuelos.destroy', $vuelo) }}" method="POST"
+                            onsubmit="return confirm('¿Estás seguro de que deseas eliminar este vuelo?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

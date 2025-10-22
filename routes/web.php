@@ -18,6 +18,11 @@ Route::get('/welcome', function () {
 })->name('/welcome');
 
 
+Route::get('/dashboard', [VueloController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index');
+
+//PASAJEROS
+Route::post('/pasajeros', [App\Http\Controllers\PasajeroController::class, 'store'])->name('pasajeros.store');
 
 // Rutas públicas
 Route::get('/', [VueloPublicController::class, 'buscar'])->name('home');
@@ -50,11 +55,6 @@ Route::get('/reservas/{id}', [ReservaController::class, 'show'])->name('reservas
 //CIUDADES  
 
 
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -89,11 +89,13 @@ Route::middleware(['auth', 'rol2'])->group(function () {
     Route::post('/aviones/asignarStore', [App\Http\Controllers\AvionController::class, 'asignarStore'])->name('aviones.asignarStore');
     Route::get('/aviones/{id}/soft-delete', [App\Http\Controllers\AvionController::class, 'softDelete'])->name('aviones.softDelete');   
 
-    Route::get('/vuelo/create', [VueloController::class, 'create'])->name('vuelos.create');
+    Route::get('/vuelos/create', [VueloController::class, 'create'])->name('vuelos.create');
     Route::post('/vuelos', [VueloController::class, 'store'])->name('vuelos.store');
-    Route::put('/vuelo/edit' ,[VueloController::class, 'store'])->name('vuelo.edit');
+    Route::get('/vuelos/{vuelo}/edit', [VueloController::class, 'edit'])->name('vuelos.edit');
+    Route::put('/vuelos/{vuelo}', [VueloController::class, 'update'])->name('vuelos.update');
+    Route::delete('/vuelos/{vuelo}', [VueloController::class, 'destroy'])->name('vuelos.destroy');
 
     Route::get('/pasajeros', [App\Http\Controllers\PasajeroController::class, 'index'])->name('pasajeros.index');
-    Route::post('/pasajeros', [App\Http\Controllers\PasajeroController::class, 'store'])->name('pasajeros.store');
+
 });
 

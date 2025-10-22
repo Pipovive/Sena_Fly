@@ -27,4 +27,9 @@ class Avion extends Model
     {
         return $this->hasMany(Vuelo::class);
     }
+     
+    public function modelo_avion()
+    {
+        return $this->belongsTo(ModeloAvion::class);
+    }
 }

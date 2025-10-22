@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="{{ route('aviones.asignarStore') }}" method="POST">
+        <form action="{{ route('aviones.store') }}" method="POST">
             @csrf
 
             <div>
