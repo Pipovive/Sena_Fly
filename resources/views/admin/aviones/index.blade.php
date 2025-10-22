@@ -27,7 +27,9 @@
                 <th class="px-4 py-2">Matricula </th>
                 <th class="px-4 py-2">Modelo Avion </th>
                 <th class="px-4 py-2">Nombre Operador</th>
+                <th class="px-4 py-2">Capacidad Total</th>
                 <th class="px-4 py-2">Acciones</th>
+                <th class="px-4 py-2">nombre_operador</th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +37,9 @@
                 <tr class="border-b">
                     <td class="px-4 py-2">{{ $avion->id }}</td>
                     <td class="px-4 py-2">{{ $avion->matricula }}</td>
-                    <td class="px-4 py-2">{{ $avion->modelo }}</td>
-                    <td class="px-4 py-2">{{ $avion->operador }}</td>
+                    <td class="px-4 py-2">{{ $avion->modeloAvion->nombre ?? 'N/A' }}</td>
+                    <td class="px-4 py-2">{{ $avion->nombre_operador }}</td>
+                    <td class="px-4 py-2">{{ $avion->modeloAvion->capacidad_total ?? 'N/A' }}</td>
                     <td class="px-4 py-2">
                         <a href="{{ route('aviones.softDelete', $avion) }}" class="text-blue-600">Inabilitar</a>
                     </td>

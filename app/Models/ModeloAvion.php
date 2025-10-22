@@ -12,4 +12,9 @@ class ModeloAvion extends Model
         'nombre',
         'capacidad_total',
     ];
+
+    public function aviones()
+    {
+        return $this->hasMany(Avion::class);
+    }
 }

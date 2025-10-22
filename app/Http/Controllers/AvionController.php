@@ -45,18 +45,19 @@ class AvionController extends Controller
     public function asignarStore(Request $request)
     {
         $request->validate([
-            'modelo_avion_id' => 'required|exists:modelos_avion,id',
+            'nombre' => 'required|string|max:255',
             'matricula' => 'required|string|max:255|unique:aviones,matricula',
             'modelo_avion_id' => 'required|exists:modelos_avion,id',
             'nombre_operador' => 'required|string|max:255',
-
+   
+       
         ]);
 
         Avion::create([
-            'modelo_avion_id' => $request->modelo_avion_id,
+            'nombre' => $request->nombre,
             'matricula' => $request->matricula,
-            'nombre_operador' => $request->nombre_operador,
             'modelo_avion_id' => $request->modelo_avion_id,
+            'nombre_operador' => $request->nombre_operador,
         ]);
 
         return redirect()->route('aviones.index')->with('success', 'Avion asignado exitosamente.');
