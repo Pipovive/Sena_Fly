@@ -1,5 +1,9 @@
 <?php
 
+
+
+// Esta línea carga las rutas de Breeze (incluyendo /login, /register, etc.)
+require __DIR__.'/auth.php';
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,9 +15,12 @@ use App\Http\Controllers\VueloPublicController;
 
 Route::get('/welcome', function () {
     return view('welcome');
-})->name('/');
+})->name('/welcome');
+
+
+
 // Rutas públicas
-// Route::get('/', [VueloPublicController::class, 'buscar'])->name('home');
+Route::get('/', [VueloPublicController::class, 'buscar'])->name('home');
 Route::post('/vuelos/buscar', [VueloPublicController::class, 'buscarVuelos'])->name('vuelos.buscar');
 Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index.public');
 Route::get('/vuelos/{vuelo}/asientos', [ReservaController::class, 'seleccionarAsientos'])->name('vuelos.asientos');
@@ -40,9 +47,10 @@ Route::get('/reserva/{codigo}', [ReservaController::class, 'confirmacion'])->nam
 Route::get('/reserva/{codigo}/pdf', [ReservaController::class, 'pdf'])->name('reserva.pdf');
 Route::get('/reservas/{id}', [ReservaController::class, 'show'])->name('reservas.show');
 
+//CIUDADES  
 
 
-Route::resource('vuelos', VueloController::class);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -56,5 +64,29 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/vuelos', [VueloController::class, 'index'])->name('vuelos.index');
+Route::get('/vuelo/create', [VueloController::class, 'create'])->name('vuelos.create');
 Route::post('/vuelos/buscar', [VueloController::class, 'buscar'])->name('vuelos.buscar');
+Route::post('/vuelos', [VueloController::class, 'store'])->name('vuelos.store');
 require __DIR__.'/auth.php';
+
+
+// Rutas de administrador 
+// Gestionar Reservas
+Route::middleware(['auth', 'rol2'])->group(function () {
+    Route::get('/admin/reservas', [AdminReservaController::class, 'index'])->name('admin.reservas.index');
+    Route::get('/admin/reservas/{id}', [AdminReservaController::class, 'show'])->name('admin.reservas.show');
+
+
+    Route::get('/ciudades', [App\Http\Controllers\CiudadController::class, 'index'])->name('ciudades.index');
+    Route::get('/ciudades/create', [App\Http\Controllers\CiudadController::class, 'create'])->name('ciudades.create');
+    Route::post('/ciudades', [App\Http\Controllers\CiudadController::class, 'store'])->name('ciudades.store');
+    Route::get('/ciudades/{id}/soft-delete', [App\Http\Controllers\CiudadController::class, 'softDelete'])->name('ciudades.softDelete');
+
+    Route::get('/aviones', [App\Http\Controllers\AvionController::class, 'index'])->name('aviones.index');
+    Route::get('/aviones/create', [App\Http\Controllers\AvionController::class, 'create'])->name('aviones.create');
+    Route::post('/aviones', [App\Http\Controllers\AvionController::class, 'store'])->name('aviones.store');
+    Route::get('/aviones/asignar', [App\Http\Controllers\AvionController::class, 'asignar'])->name('aviones.asignar');
+    Route::post('/aviones/asignarStore', [App\Http\Controllers\AvionController::class, 'asignarStore'])->name('aviones.asignarStore');
+    Route::get('/aviones/{id}/soft-delete', [App\Http\Controllers\AvionController::class, 'softDelete'])->name('aviones.softDelete');   
+});
+

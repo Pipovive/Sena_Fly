@@ -31,9 +31,19 @@
             <nav class="mt-6">
                 <a href="{{ route('dashboard') }}" class="block px-6 py-3 hover:bg-blue-700">🏠 Dashboard</a>
                 <a href="{{ route('vuelos.index') }}" class="block px-6 py-3 hover:bg-blue-700">🛫 Vuelos</a>
-                <a href="#" class="block px-6 py-3 hover:bg-blue-700">🎟 Reservas</a>
+
+
+
                 <a href="#" class="block px-6 py-3 hover:bg-blue-700">👤 Usuarios</a>
+
                 <a href="#" class="block px-6 py-3 hover:bg-blue-700">⚙ Configuración</a>
+                @if (Auth::user()->rol == 2)
+                    <a href="{{ route('ciudades.index') }}" class="block px-6 py-3 hover:bg-blue-700">⚙ Ciudades</a>
+                    <a href="{{ route('admin.reservas.index') }}" class="block px-6 py-3 hover:bg-blue-700">🎟
+                        Reservas</a>
+                    <a href="{{ route('aviones.index') }}" class="block px-6 py-3 hover:bg-blue-700">🎟
+                        Aviones</a>
+                @endif
             </nav>
     </aside>
 

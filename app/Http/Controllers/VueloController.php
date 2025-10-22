@@ -19,6 +19,7 @@ class VueloController extends Controller
     {
         $ciudades = Ciudad::all();
         $aviones = Avion::all();
+
         return view('vuelos.create', compact('ciudades', 'aviones'));
     }
 
