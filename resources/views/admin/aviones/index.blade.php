@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Ciudades - Sistema de Vuelos')
+@section('title', 'Aviones - Sistema de Vuelos')
 
 @section('content')
 
@@ -20,28 +20,27 @@
         </div>
     @endif
 
-    <table class="min-w-full bg-white rounded shadow">
+    <table class="min-w-full table-auto w-full bg-white rounded shadow border border-gray-300">
         <thead>
-            <tr class="bg-gray-200">
-                <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Matricula </th>
-                <th class="px-4 py-2">Modelo Avion </th>
-                <th class="px-4 py-2">Nombre Operador</th>
-                <th class="px-4 py-2">Capacidad Total</th>
-                <th class="px-4 py-2">Acciones</th>
-                <th class="px-4 py-2">nombre_operador</th>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 px-4 py-2 text-center">Matrícula</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Modelo Avión</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Nombre Operador</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Capacidad Total</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($aviones as $avion)
-                <tr class="border-b">
-                    <td class="px-4 py-2">{{ $avion->id }}</td>
-                    <td class="px-4 py-2">{{ $avion->matricula }}</td>
-                    <td class="px-4 py-2">{{ $avion->modeloAvion->nombre ?? 'N/A' }}</td>
-                    <td class="px-4 py-2">{{ $avion->nombre_operador }}</td>
-                    <td class="px-4 py-2">{{ $avion->modeloAvion->capacidad_total ?? 'N/A' }}</td>
-                    <td class="px-4 py-2">
-                        <a href="{{ route('aviones.softDelete', $avion) }}" class="text-blue-600">Inabilitar</a>
+                <tr class="hover:bg-gray-50">   
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $avion->matricula }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $avion->modeloAvion->nombre ?? 'N/A' }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $avion->nombre_operador }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $avion->modeloAvion->capacidad_total ?? 'N/A' }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('aviones.softDelete', $avion) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Inabilitar</a>
+                        </div>
                     </td>
                 </tr>
             @endforeach
