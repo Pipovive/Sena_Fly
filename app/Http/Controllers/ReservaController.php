@@ -21,7 +21,7 @@ class ReservaController extends Controller
     return view('reservas.show', compact('reserva'));
 }
 
-
+    // 1. Seleccionar vuelo
     public function seleccionarVuelo(Request $request)
     {
         $vuelos = [];
@@ -36,7 +36,7 @@ class ReservaController extends Controller
         return view('reservas.seleccionar-vuelo', compact('vuelos'));
     }
 
-    // 2. Elegir d
+    // 2. Elegir asientos
     public function seleccionarAsientos($reservaId)
 {
     $reserva = Reserva::with('vuelo.avion.asientos')->findOrFail($reservaId);
