@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('reservas', function (Blueprint $table) {
+        Schema::create('reservas', function (Blueprint $table) {
         $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade'); // <--- usuario
         $table->string('codigo_reserva')->unique();
         $table->foreignId('vuelo_id')->constrained('vuelos')->onDelete('cascade');
         $table->string('nombre_titular');
@@ -23,7 +24,7 @@ return new class extends Migration
         $table->integer('cantidad_pasajeros')->default(1);
         $table->decimal('total_pagado', 10, 2)->nullable();
         $table->timestamps();
-});
+    });
 
     }
 
@@ -34,4 +35,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('reservas');
     }
+
+    
 };

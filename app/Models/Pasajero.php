@@ -35,7 +35,6 @@ class Pasajero extends Model
         return $this->belongsTo(Asiento::class);
     }
 
-    // Hook del modelo: calcula si el pasajero es menor de edad al crear
     protected static function boot()
     {
         parent::boot();

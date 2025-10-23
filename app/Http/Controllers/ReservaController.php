@@ -9,10 +9,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Asiento;
+use Illuminate\Support\Facades\Auth;
 
 class ReservaController extends Controller
 {
-    
+
+public function index()
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+
+    if ($user->rol == 2) {
+        // Admin ve todas las reservas
+        $reservas = Reserva::with(['vuelo.origen', 'vuelo.destino', 'pasajeros.asiento'])->get();
+    } else {
+        // Usuario normal solo ve sus reservas
+        $reservas = Reserva::with(['vuelo.origen', 'vuelo.destino', 'pasajeros.asiento'])
+                            ->where('user_id', $user->id)
+                            ->get();
+    }
+
+    return view('reservas.index', compact('reservas'));
+}
 
 
     public function show($id)
@@ -70,7 +88,6 @@ public function guardarAsientoYpasajero(Request $request, $reservaId)
         'telefono' => 'nullable|string',
     ]);
 
-    // ✅ Crear pasajero asociado a la reserva
     $esMenor = \Carbon\Carbon::parse($request->fecha_nacimiento)->age < 18;
 
     $pasajero = \App\Models\Pasajero::create([
@@ -87,7 +104,6 @@ public function guardarAsientoYpasajero(Request $request, $reservaId)
         'asiento_id' => $request->asiento_id,
     ]);
 
-    // ✅ Marcar el asiento como no disponible
     $asiento = \App\Models\Asiento::find($request->asiento_id);
     $asiento->disponible = false;
     $asiento->save();
@@ -132,7 +148,6 @@ public function guardarAsientoYpasajero(Request $request, $reservaId)
         return redirect()->route('reservas.detalle', $codigo);
     }
 
-    // 5. Ver detalle de reserva
     public function detalle($codigo)
     {
            $reserva = Reserva::with(['vuelo.origen', 'vuelo.destino', 'pasajeros.asiento'])
@@ -219,6 +234,10 @@ public function guardarPasajeros(Request $request, $id)
     return redirect()->route('reservas.detalle', $reserva->codigo_reserva)
                      ->with('success', 'Pasajeros y asientos registrados correctamente');
 }
+
+   public function mostrarPago() {
+    
+   }
 
 
 }
