@@ -21,7 +21,6 @@
     <table class="min-w-full bg-white rounded shadow">
         <thead>
             <tr class="bg-gray-200">
-                <th class="px-4 py-2">ID</th>
                 <th class="px-4 py-2">Origen</th>
                 <th class="px-4 py-2">Destino</th>
                 <th class="px-4 py-2">Fecha</th>
@@ -32,7 +31,6 @@
         <tbody>
             @foreach ($reservas as $reserva)
                 <tr class="border-b">
-                    <td class="px-4 py-2">{{ $reserva->id }}</td>
                     <td class="px-4 py-2">{{ $reserva->origen->nombre }}</td>
                     <td class="px-4 py-2">{{ $reserva->destino->nombre }}</td>
                     <td class="px-4 py-2">{{ $reserva->fecha }}</td>

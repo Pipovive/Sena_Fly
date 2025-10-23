@@ -20,7 +20,6 @@
     <table class="min-w-full table-auto w-full bg-white rounded shadow border border-gray-300">
         <thead>
             <tr class="bg-gray-100">
-                <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
                 <th class="border border-gray-300 px-4 py-2 text-center">Nombre</th>
                 <th class="border border-gray-300 px-4 py-2 text-center">código IATA</th>
                 <th class="border border-gray-300 px-4 py-2 text-center">País</th>
@@ -30,7 +29,6 @@
         <tbody>
             @foreach ($ciudades as $ciudad)
                 <tr class="hover:bg-gray-50">
-                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->id }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->nombre }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->codigo_iata }}</td>
                     <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->pais }}</td>

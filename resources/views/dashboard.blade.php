@@ -95,7 +95,6 @@
                 <table class="min-w-full bg-white border">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Origen</th>
                             <th>Destino</th>
                             <th>Fecha</th>
@@ -106,7 +105,6 @@
                     <tbody>
                         @forelse ($vuelos as $vuelo)
                             <tr>
-                                <td>{{ $vuelo->id }}</td>
                                 <td>{{ $vuelo->origen->nombre }}</td>
                                 <td>{{ $vuelo->destino->nombre }}</td>
                                 <td>{{ $vuelo->fecha }}</td>

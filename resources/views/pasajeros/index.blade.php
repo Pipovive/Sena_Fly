@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Vuelos')
+@section('title', 'Pasajeros')
 
 @section('content')
 
@@ -17,7 +17,6 @@
     <table class="min-w-full bg-white rounded shadow">
         <thead>
             <tr class="bg-gray-200">
-                <th class="px-4 py-2">ID</th>
                 <th class="px-4 py-2">Nombre</th>
                 <th class="px-4 py-2">Apellido</th>
                 <th class="px-4 py-2">Tipo de Documento</th>
@@ -30,7 +29,6 @@
         <tbody>
             @foreach ($pasajeros as $pasajero)
                 <tr class="border-b">
-                    <td class="px-4 py-2">{{ $pasajero->id }}</td>
                     <td class="px-4 py-2">{{ $pasajero->nombre }}</td>
                     <td class="px-4 py-2">{{ $pasajero->apellido }}</td>
                     <td class="px-4 py-2">{{ $pasajero->tipo_documento }}</td>
