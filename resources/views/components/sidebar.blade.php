@@ -1,7 +1,7 @@
 <!-- Sidebar reutilizable -->
 <aside class="w-64 bg-blue-900 text-white h-screen fixed shadow-lg overflow-y-auto">
     <div class="p-6 text-center text-2xl font-bold border-b border-blue-700">
-        ✈️ AirSystem
+        ✈️ SenaFly
         {{ Auth::user()->name }}
     </div>
     <div class="p-6 border-b border-blue-700">
