@@ -14,11 +14,26 @@ class Avion extends Model
     protected $fillable = [
         'modelo',
         'capacidad',
-        'matricula'
+        'matricula',
+        'modelo_avion_id'
     ];
 
     public function vuelos()
     {
         return $this->hasMany(Vuelo::class);
     }
+    public function modeloAvion()
+{
+    return $this->belongsTo(ModeloAvion::class);
+}
+     
+    public function modelo_avion()
+    {
+        return $this->belongsTo(ModeloAvion::class);
+    }
+
+    public function asientos()
+{
+    return $this->hasMany(Asiento::class);
+}
 }

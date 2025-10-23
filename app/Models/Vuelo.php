@@ -19,28 +19,27 @@ class Vuelo extends Model
         'hora_salida',
         'hora_llegada',
         'precio',
+        'estado',
     ];
 
-    // Relación con ciudad de origen
     public function origen()
     {
         return $this->belongsTo(Ciudad::class, 'origen_id');
     }
 
-    // Relación con ciudad de destino
     public function destino()
     {
         return $this->belongsTo(Ciudad::class, 'destino_id');
     }
 
-    // Relación con avión
+  
     public function avion()
     {
         return $this->belongsTo(Avion::class);
     }
 
     public function reservas()
-{
-    return $this->hasMany(Reserva::class);
-}
+    {
+        return $this->hasMany(Reserva::class);
+    }
 }

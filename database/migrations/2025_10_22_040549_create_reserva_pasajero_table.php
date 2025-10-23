@@ -12,18 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reserva_pasajero', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
-        $table->foreignId('vuelo_id')->constrained('vuelos');
-        $table->foreignId('pasajero_id')->constrained('pasajeros')->onDelete('cascade');
-        $table->string('asiento');
-        $table->string('clase')->default('económica');
-        $table->decimal('precio', 10, 2);
+       $table->id();
+        $table->string('codigo_reserva')->unique();
+        $table->foreignId('vuelo_id')->constrained('vuelos')->onDelete('cascade');
+        $table->string('nombre_titular');
+        $table->string('apellido_titular');
+        $table->string('email_titular');
+        $table->string('telefono_titular')->nullable();
+        $table->enum('estado', ['pendiente', 'pagada', 'cancelada'])->default('pendiente');
+        $table->integer('cantidad_pasajeros')->default(1);
+        $table->decimal('total_pagado', 10, 2)->nullable();
         $table->timestamps();
-
-        // ⚠️ Evita venta doble del mismo asiento en el mismo vuelo
-        $table->unique(['vuelo_id', 'asiento']);
     });
+
 
     }
 

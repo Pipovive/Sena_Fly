@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pasajero extends Model
@@ -14,13 +15,26 @@ class Pasajero extends Model
     protected $fillable = [
         'nombre',
         'apellido',
-        'documento',
+        'genero',
+        'fecha_nacimiento',
+        'tipo_documento',
+        'numero_documento',
         'email',
-        'telefono'
+        'telefono',
+        'es_menor',
+        'asiento'
     ];
 
-    public function reservas()
+    public function reserva()
     {
-        return $this->hasMany(Reserva::class);
+        return $this->belongsTo(Reserva::class);
+    }
+     protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($pasajero) {
+            $pasajero->es_menor = Carbon::parse($pasajero->fecha_nacimiento)->age < 18;
+        });
     }
 }

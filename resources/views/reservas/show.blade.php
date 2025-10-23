@@ -33,17 +33,18 @@
     {{-- Información del vuelo --}}
     <div class="bg-white shadow-md rounded-lg p-6 mb-6">
         <h2 class="text-lg font-semibold mb-4">✈️ Información del vuelo</h2>
-        <p><strong>Origen:</strong> {{ $reserva->vuelo->origen }}</p>
-        <p><strong>Destino:</strong> {{ $reserva->vuelo->destino }}</p>
-        <p><strong>Fecha de salida:</strong> {{ $reserva->vuelo->fecha_salida }}</p>
+        <p><strong>Origen:</strong> {{ $reserva->vuelo->origen->nombre }}</p>
+        <p><strong>Destino:</strong> {{ $reserva->vuelo->destino->nombre }}</p>
+        <p><strong>Fecha de salida:</strong> {{ $reserva->vuelo->fecha }}</p>
         <p><strong>Hora de salida:</strong> {{ $reserva->vuelo->hora_salida }}</p>
         <p><strong>Precio por pasajero:</strong> ${{ number_format($reserva->vuelo->precio, 0, ',', '.') }}</p>
     </div>
 
     {{-- Botón para continuar --}}
     <div class="flex justify-end">
-        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            Continuar: Registrar Pasajeros
+        <a href="{{ route('reservas.asientos', $reserva->id) }}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Continuar: Registrar Pasajeros / Seleccionar Asientos
         </a>
     </div>
 

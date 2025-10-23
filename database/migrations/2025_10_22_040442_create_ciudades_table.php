@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ciudades', function (Blueprint $table) {
         $table->id();
+        $table->boolean('estado')->default(1);
         $table->string('nombre');
         $table->string('pais')->default('Colombia');
         $table->string('codigo_iata', 5)->nullable(); // opcional
