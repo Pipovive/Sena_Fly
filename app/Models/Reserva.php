@@ -15,11 +15,17 @@ class Reserva extends Model
     // Nombre de la tabla en la base de datos
     protected $table = 'reservas';
 
-    // Campos que se pueden asignar masivamente
-    protected $fillable = [
-        'codigo_reserva', 'vuelo_id', 'nombre_titular', 'apellido_titular',
-        'email_titular', 'telefono_titular', 'estado', 'cantidad_pasajeros',
-        'total_pagado', 'asiento_id'
+      protected $fillable = [
+        'user_id',
+        'codigo_reserva',
+        'vuelo_id',
+        'nombre_titular',
+        'apellido_titular',
+        'email_titular',
+        'telefono_titular',
+        'estado',
+        'cantidad_pasajeros',
+        'total_pagado',
     ];
 
     // Relación con el vuelo asociado a esta reserva
@@ -45,4 +51,10 @@ class Reserva extends Model
     {
         return $this->belongsTo(Asiento::class);
     }
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }

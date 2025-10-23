@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Vuelo;
 use App\Models\Ciudad;
 use App\Models\Avion;
+use App\Models\Pago;
+use App\Models\Reserva;
 use Illuminate\Http\Request;
 
 class VueloController extends Controller
@@ -155,6 +157,46 @@ class VueloController extends Controller
 
         return view('vuelos.resultados', compact('vuelos'));
     }
+
+    public function mostrarPago($codigo)
+{
+    $reserva = Reserva::where('codigo_reserva', $codigo)
+        ->with('vuelo', 'pasajeros')
+        ->firstOrFail();
+
+    return view('reservas.pago', compact('reserva'));
+}
+
+public function procesarPago(Request $request, $codigo)
+{
+    $reserva = Reserva::where('codigo_reserva', $codigo)->firstOrFail();
+
+    $request->validate([
+        'metodo' => 'required|in:tarjeta_credito,debito,pse',
+        // campos extra para tarjeta (simulados)
+        'numero_tarjeta' => 'nullable|required_if:metodo,tarjeta_credito|digits:16',
+        'nombre_tarjeta' => 'nullable|required_if:metodo,tarjeta_credito|string|max:255',
+        'fecha_vencimiento' => 'nullable|required_if:metodo,tarjeta_credito|date_format:m/y',
+        'cvv' => 'nullable|required_if:metodo,tarjeta_credito|digits:3',
+    ]);
+
+    // Simulación de pago exitoso
+    $pago = Pago::create([
+        'reserva_id' => $reserva->id,
+        'metodo' => $request->metodo,
+        'estado' => 'exitoso',
+        'referencia' => 'REF-' . strtoupper(uniqid()),
+        'detalle' => json_encode($request->except('_token')),
+    ]);
+
+    // Actualizar reserva
+    $reserva->estado = 'pagada';
+    $reserva->total_pagado = $reserva->vuelo->precio * $reserva->cantidad_pasajeros;
+    $reserva->save();
+
+    return redirect()->route('reservas.detalle', $reserva->codigo_reserva)
+        ->with('success', 'Pago realizado correctamente');
+}
         
 }
 

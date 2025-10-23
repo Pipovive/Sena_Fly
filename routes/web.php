@@ -9,6 +9,7 @@ use App\Http\Controllers\VueloPublicController;
 use App\Http\Controllers\CiudadController;
 use App\Http\Controllers\AvionController;
 use App\Http\Controllers\PasajeroController;
+use App\Http\Controllers\PagoController ;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,6 @@ Route::get('/reservas/{codigo}/detalle', [ReservaController::class, 'detalle'])-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [VueloController::class, 'dashboard'])->name('dashboard');
 
-    // ✅ CREAR RESERVA DESDE DASHBOARD
     Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create');
     Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
     Route::get('/reservas/detalle/{codigo}', [ReservaController::class, 'detalle'])->name('reservas.detalle');
@@ -44,6 +44,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->name('reservas.asientos');
     Route::post('/reservas/{reserva}/asientos', [ReservaController::class, 'guardarAsientoYpasajero'])
         ->name('reservas.asientos.store');
+
+        // Mostrar formulario de pago para una reserva
+    // Route::get('/reservas/{codigo}/pago', [ReservaController::class, 'mostrarPago'])
+    //     ->name('reservas.pago');
+
+    // // Procesar el pago
+    // Route::post('/reservas/{codigo}/pago', [ReservaController::class, 'procesarPago'])
+    //     ->name('reservas.pago.procesar');
+
+        // Formulario de pag
+
+    Route::get('reservas/{reserva}/pago', [PagoController::class, 'formulario'])->name('pagos.formulario');
+    Route::post('reservas/{reserva}/pago', [PagoController::class, 'procesarPago'])->name('pagos.procesar');
+    Route::get('pagos/{pago}', [PagoController::class, 'ver'])->name('pagos.ver');
     
 
     // Pasajeros
