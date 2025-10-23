@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Formulario de pag
 
     Route::get('reservas/{reserva}/pago', [PagoController::class, 'formulario'])->name('pagos.formulario');
-    Route::post('reservas/{reserva}/pago', [PagoController::class, 'procesarPago'])->name('pagos.procesar');
+    Route::post('/pagos/{reserva}/procesar', [PagoController::class, 'procesarPago'])->name('pagos.procesar');
     Route::get('pagos/{pago}', [PagoController::class, 'ver'])->name('pagos.ver');
     
 

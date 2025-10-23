@@ -15,7 +15,7 @@
             <a href="{{ route('pasajeros.index') }}" class="block px-6 py-3 hover:bg-blue-700">🛫 Pasajeros</a>
             @if (Auth::user()->rol == 2)
                 <a href="{{ route('ciudades.index') }}" class="block px-6 py-3 hover:bg-blue-700">⚙ Ciudades</a>
-                <a href="{{ route('admin.reservas.index') }}" class="block px-6 py-3 hover:bg-blue-700">🎟 Reservas</a>
+                <a href="{{ route('reservas.index') }}" class="block px-6 py-3 hover:bg-blue-700">🎟 Reservas</a>
                 <a href="{{ route('aviones.index') }}" class="block px-6 py-3 hover:bg-blue-700">✈️ Aviones</a>
             @endif
         </nav>

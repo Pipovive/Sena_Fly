@@ -10,11 +10,14 @@ class PagoController extends Controller
 {
     public function formulario(Reserva $reserva)
     {
+        
         return view('pagos.formulario', compact('reserva'));
     }
 
     public function procesarPago(Request $request, Reserva $reserva)
     {
+
+        dd($request->all(), $reserva);
         $request->validate([
             'metodo' => 'required|in:tarjeta_credito,debito,pse',
             'numero_cuenta' => 'required|string',
