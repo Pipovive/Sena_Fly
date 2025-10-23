@@ -17,42 +17,36 @@
         </div>
     @endif
 
-    <table class="min-w-full bg-white rounded shadow">
+    <table class="min-w-full table-auto w-full bg-white rounded shadow border border-gray-300">
         <thead>
-            <tr class="bg-gray-200">
-                <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Avion</th>
-                <th class="px-4 py-2">Operador</th>
-                <th class="px-4 py-2">Origen</th>
-                <th class="px-4 py-2">Destino</th>
-                <th class="px-4 py-2">Fecha</th>
-                <th class="px-4 py-2">Precio</th>
-                <th class="px-4 py-2">Acciones</th>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 px-4 py-2 text-center">Avión</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Operador</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Origen</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Destino</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Fecha</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Precio</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($vuelos as $vuelo)
-                <tr class="border-b">
-                    <td class="px-4 py-2">{{ $vuelo->id }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->avion->modelo }} ({{ $vuelo->avion->matricula }})</td>
-                    <td class="px-4 py-2">{{ optional($vuelo->origen)->nombre_operador ?? 'Avianca' }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->origen->nombre }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->destino->nombre }}</td>
-                    <td class="px-4 py-2">{{ $vuelo->fecha }}</td>
-                    <td class="px-4 py-2">${{ $vuelo->precio }}</td>
-                    <td class="px-4 py-2">
-                        <a href="{{ route('vuelos.edit', $vuelo) }}" class="text-blue-600">Editar</a>
-                    </td>
-                    <td class="px-4 py-2">
-                        <a href="{{ route('vuelos.edit', $vuelo) }}" class="text-blue-600">Editar</a>
-                    </td>
-                    <td class="px-4 py-2">
-                        <form action="{{ route('vuelos.destroy', $vuelo) }}" method="POST"
-                            onsubmit="return confirm('¿Estás seguro de que deseas eliminar este vuelo?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600">Eliminar</button>
-                        </form>
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $vuelo->avion->modelo }} ({{ $vuelo->avion->matricula }})</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ optional($vuelo->origen)->nombre_operador ?? 'Avianca' }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $vuelo->origen->nombre }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $vuelo->destino->nombre }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $vuelo->fecha }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${{ $vuelo->precio }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('vuelos.edit', $vuelo) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Editar</a>
+                            <form action="{{ route('vuelos.destroy', $vuelo) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este vuelo?');" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach

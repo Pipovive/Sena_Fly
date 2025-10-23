@@ -17,25 +17,27 @@
         </div>
     @endif
 
-    <table class="min-w-full bg-white rounded shadow">
+    <table class="min-w-full table-auto w-full bg-white rounded shadow border border-gray-300">
         <thead>
-            <tr class="bg-gray-200">
-                <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Nombre</th>
-                <th class="px-4 py-2">codigo_iata</th>
-                <th class="px-4 py-2">Pais</th>
-                <th class="px-4 py-2">Acciones</th>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Nombre</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">código IATA</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">País</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($ciudades as $ciudad)
-                <tr class="border-b">
-                    <td class="px-4 py-2">{{ $ciudad->id }}</td>
-                    <td class="px-4 py-2">{{ $ciudad->nombre }}</td>
-                    <td class="px-4 py-2">{{ $ciudad->codigo_iata }}</td>
-                    <td class="px-4 py-2">{{ $ciudad->pais }}</td>
-                    <td class="px-4 py-2">
-                        <a href="{{ route('ciudades.softDelete', $ciudad) }}" class="text-blue-600">Inabilitar</a>
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->id }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->nombre }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->codigo_iata }}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">{{ $ciudad->pais }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('ciudades.softDelete', $ciudad) }}" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Inabilitar</a>
+                        </div>
                     </td>
                 </tr>
             @endforeach
