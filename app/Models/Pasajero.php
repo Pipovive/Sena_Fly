@@ -13,22 +13,21 @@ class Pasajero extends Model
     protected $table = 'pasajeros';
 
     protected $fillable = [
-        'nombre',
-        'apellido',
-        'genero',
-        'fecha_nacimiento',
-        'tipo_documento',
-        'numero_documento',
-        'email',
-        'telefono',
-        'es_menor',
-        'asiento'
+        'reserva_id', 'nombre', 'apellido', 'genero', 'fecha_nacimiento',
+        'tipo_documento', 'numero_documento', 'email', 'telefono',
+        'es_menor', 'asiento_id'
     ];
 
     public function reserva()
     {
         return $this->belongsTo(Reserva::class);
     }
+
+    public function asiento()
+    {
+        return $this->belongsTo(Asiento::class);
+    }
+
      protected static function boot()
     {
         parent::boot();

@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ✅ CREAR RESERVA DESDE DASHBOARD
     Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create');
     Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
+    Route::get('/reservas/detalle/{codigo}', [ReservaController::class, 'detalle'])->name('reservas.detalle');
     Route::get('/reservas/{id}', [ReservaController::class, 'show'])->name('reservas.show');
     Route::get('/reservas/{reserva}/asientos', [ReservaController::class, 'seleccionarAsientos'])
     ->name('reservas.asientos');
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/reservas/{reserva}/pasajeros', [ReservaController::class, 'guardarPasajeros'])->name('reservas.pasajeros.store');
     Route::get('/reservas/{reserva}/asientos', [ReservaController::class, 'seleccionarAsientos'])
     ->name('reservas.asientos');
+    Route::post('/reservas/{reserva}/asientos', [ReservaController::class, 'guardarAsientoYpasajero'])
+        ->name('reservas.asientos.store');
+    
 
     // Pasajeros
     Route::post('/pasajeros', [PasajeroController::class, 'store'])->name('pasajeros.store');
