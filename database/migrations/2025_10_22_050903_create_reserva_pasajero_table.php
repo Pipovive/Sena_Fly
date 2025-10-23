@@ -22,6 +22,7 @@ return new class extends Migration
         $table->enum('estado', ['pendiente', 'pagada', 'cancelada'])->default('pendiente');
         $table->integer('cantidad_pasajeros')->default(1);
         $table->decimal('total_pagado', 10, 2)->nullable();
+        $table->foreignId('asiento_id')->nullable()->constrained('asientos')->onDelete('set null');
         $table->timestamps();
     });
 

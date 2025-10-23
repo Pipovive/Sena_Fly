@@ -8,6 +8,7 @@ use App\Models\Pasajero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Models\Asiento;
 
 class ReservaController extends Controller
 {
@@ -35,29 +36,67 @@ class ReservaController extends Controller
         return view('reservas.seleccionar-vuelo', compact('vuelos'));
     }
 
-    // 2. Elegir asientos
+    // 2. Elegir d
     public function seleccionarAsientos($reservaId)
 {
-    // 1) Cargar la reserva con su vuelo y avión
-    $reserva = Reserva::with('vuelo.avion.asientos', 'vuelo.origen', 'vuelo.destino')->findOrFail($reservaId);
+    $reserva = Reserva::with('vuelo.avion.asientos')->findOrFail($reservaId);
     $vuelo = $reserva->vuelo;
 
-    // 2) Obtener asientos ya ocupados para este vuelo desde la tabla reserva_pasajero
-    $asientosOcupados = DB::table('reserva_pasajero')
-        ->where('vuelo_id', $vuelo->id)
-        ->pluck('asiento')
-        ->toArray();
+    $asientosOcupados = Pasajero::whereHas('reserva', function ($q) use ($vuelo) {
+        $q->where('vuelo_id', $vuelo->id);
+    })->pluck('asiento_id')->toArray();
 
-    // 3) Tomar asientos reales del avión y marcar si están ocupados
     $asientos = $vuelo->avion->asientos->map(function ($a) use ($asientosOcupados) {
-        // Si tu modelo Asiento tiene 'codigo' y 'disponible' ajusta según corresponda
-        $a->ocupado = in_array($a->codigo, $asientosOcupados);
+        $a->ocupado = in_array($a->id, $asientosOcupados);
         return $a;
     });
 
-    // 4) Retornar la vista ENVIANDO $asientos (IMPORTANTE)
     return view('reservas.elegir-asientos', compact('reserva', 'vuelo', 'asientos'));
 }
+
+public function guardarAsientoYpasajero(Request $request, $reservaId)
+{
+    $reserva = Reserva::findOrFail($reservaId);
+
+    $request->validate([
+        'asiento_id' => 'required|exists:asientos,id',
+        'nombre' => 'required|string|max:255',
+        'apellido' => 'required|string|max:255',
+        'tipo_documento' => 'required|string',
+        'numero_documento' => 'required|string',
+        'genero' => 'required|string',
+        'fecha_nacimiento' => 'required|date',
+        'email' => 'nullable|email',
+        'telefono' => 'nullable|string',
+    ]);
+
+    // ✅ Crear pasajero asociado a la reserva
+    $esMenor = \Carbon\Carbon::parse($request->fecha_nacimiento)->age < 18;
+
+    $pasajero = \App\Models\Pasajero::create([
+        'reserva_id' => $reserva->id,
+        'nombre' => $request->nombre,
+        'apellido' => $request->apellido,
+        'tipo_documento' => $request->tipo_documento,
+        'numero_documento' => $request->numero_documento,
+        'genero' => $request->genero,
+        'fecha_nacimiento' => $request->fecha_nacimiento,
+        'email' => $request->email,
+        'telefono' => $request->telefono,
+        'es_menor' => $esMenor,
+        'asiento_id' => $request->asiento_id,
+    ]);
+
+    // ✅ Marcar el asiento como no disponible
+    $asiento = \App\Models\Asiento::find($request->asiento_id);
+    $asiento->disponible = false;
+    $asiento->save();
+
+    return redirect()
+        ->route('reservas.detalle', $reserva->codigo_reserva)
+        ->with('success', 'Pasajero y asiento registrados correctamente');
+}
+
 
 
     public function datosPasajeros(Request $request)
@@ -96,7 +135,10 @@ class ReservaController extends Controller
     // 5. Ver detalle de reserva
     public function detalle($codigo)
     {
-        $reserva = Reserva::where('codigo', $codigo)->firstOrFail();
+           $reserva = Reserva::with(['vuelo.origen', 'vuelo.destino', 'pasajeros.asiento'])
+            ->where('codigo_reserva', $codigo)
+            ->firstOrFail();
+
         return view('reservas.detalle', compact('reserva'));
     }
 
@@ -112,6 +154,7 @@ class ReservaController extends Controller
     return view('reservas.create', compact('vuelo', 'asientosOcupados'));
 }
 
+    
 
     public function store(Request $request)
     {

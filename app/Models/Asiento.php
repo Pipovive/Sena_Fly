@@ -9,10 +9,20 @@ class Asiento extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['avion_id', 'codigo', 'disponible'];
+    protected $fillable = ['avion_id', 'codigo', 'clase', 'disponible'];
 
     public function avion()
     {
         return $this->belongsTo(Avion::class);
+    }
+    
+    public function pasajero()
+    {
+        return $this->hasOne(Pasajero::class);
+    }
+
+    public function reserva()
+    {
+        return $this->hasOne(Reserva::class);
     }
 }

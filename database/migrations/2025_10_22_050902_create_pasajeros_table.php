@@ -33,6 +33,7 @@ return new class extends Migration
         $table->boolean('es_menor')->default(false);
         $table->string('asiento'); // A1, B3, etc.
 
+           $table->foreignId('asiento_id')->nullable()->constrained('asientos')->onDelete('set null');
         $table->timestamps();
         });
 

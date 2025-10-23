@@ -12,15 +12,9 @@ class Reserva extends Model
     protected $table = 'reservas';
 
       protected $fillable = [
-        'codigo_reserva',
-        'vuelo_id',
-        'nombre_titular',
-        'apellido_titular',
-        'email_titular',
-        'telefono_titular',
-        'estado',
-        'cantidad_pasajeros',
-        'total_pagado'
+        'codigo_reserva', 'vuelo_id', 'nombre_titular', 'apellido_titular',
+        'email_titular', 'telefono_titular', 'estado', 'cantidad_pasajeros',
+        'total_pagado', 'asiento_id'
     ];
 
     public function vuelo()
@@ -37,5 +31,9 @@ class Reserva extends Model
 {
     return $this->hasMany(Pasajero::class);
 }
+    public function asiento()
+    {
+        return $this->belongsTo(Asiento::class);
+    }
 
 }
