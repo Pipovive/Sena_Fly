@@ -13,17 +13,28 @@ return new class extends Migration
     {
         Schema::create('pasajeros', function (Blueprint $table) {
         $table->id();
-        $table->string('nombres');
-        $table->string('apellidos');
+        $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
+
+        // Datos personales
+        $table->string('nombre');
+        $table->string('apellido');
+        $table->enum('genero', ['M', 'F', 'O']);
         $table->date('fecha_nacimiento');
-        $table->enum('genero', ['M', 'F', 'Otro']);
-        $table->string('tipo_documento', 10);
+
+        // Documento
+        $table->enum('tipo_documento', ['CC', 'TI', 'CE', 'Pasaporte']);
         $table->string('numero_documento');
-        $table->boolean('es_infante')->default(false);
+
+        // Contacto del pasajero (opcional si lo tiene)
         $table->string('email')->nullable();
         $table->string('telefono')->nullable();
+
+        // Campo calculado (menor de edad o no)
+        $table->boolean('es_menor')->default(false);
+        $table->string('asiento'); // A1, B3, etc.
+
         $table->timestamps();
-    });
+        });
 
 
     }

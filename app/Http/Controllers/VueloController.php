@@ -15,11 +15,39 @@ class VueloController extends Controller
         return view('vuelos.index', compact('vuelos'));
     }
 
-    public function dashboard()
-    {
-        $vuelos = Vuelo::with(['origen', 'destino', 'avion'])->get();
-        return view('dashboard', compact('vuelos'));
+    public function dashboard(Request $request)
+{
+    $ciudades = Ciudad::all();
+
+    $query = Vuelo::with(['origen', 'destino', 'avion'])
+        ->where('estado', 'programado');
+
+    if ($request->filled('origen_id')) {
+        $query->where('origen_id', $request->origen_id);
     }
+
+    if ($request->filled('destino_id')) {
+        $query->where('destino_id', $request->destino_id);
+    }
+
+    if ($request->filled('fecha_salida')) {
+        $query->whereDate('fecha', $request->fecha_salida);
+    }
+
+    // Si selecciona ida y vuelta, mostrar vuelos de ida y de regreso disponibles
+    if ($request->tipo_vuelo === 'ida_vuelta' && $request->filled('fecha_regreso')) {
+        $query->orWhere(function ($q) use ($request) {
+            $q->where('origen_id', $request->destino_id)
+              ->where('destino_id', $request->origen_id)
+              ->whereDate('fecha', $request->fecha_regreso);
+        });
+    }
+
+    $vuelos = $query->get();
+
+    return view('dashboard', compact('vuelos', 'ciudades'));
+}
+
 
     public function create()
     {
@@ -114,7 +142,20 @@ class VueloController extends Controller
 
         return view('vuelos.index', compact('vuelos'));
     }
-    
+
+    public function buscarVuelos(Request $request)
+    {
+        $vuelos = Vuelo::where('origen_id', $request->origen)
+            ->where('destino_id', $request->destino)
+            ->whereDate('fecha_salida', $request->fecha_ida)
+            ->when($request->tipo_vuelo === 'ida_y_vuelta', function ($query) use ($request) {
+                $query->whereDate('fecha_regreso', $request->fecha_vuelta);
+            })
+            ->get();
+
+        return view('vuelos.resultados', compact('vuelos'));
+    }
+        
 }
 
 

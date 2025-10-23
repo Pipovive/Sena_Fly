@@ -39,7 +39,7 @@ class Vuelo extends Model
     }
 
     public function reservas()
-{
-    return $this->hasMany(Reserva::class);
-}
+    {
+        return $this->hasMany(Reserva::class);
+    }
 }

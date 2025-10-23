@@ -33,4 +33,9 @@ class Reserva extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function pasajeros()
+{
+    return $this->hasMany(Pasajero::class);
+}
+
 }
