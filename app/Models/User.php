@@ -1,4 +1,6 @@
 <?php
+// Modelo User: representa a los usuarios autenticados del sistema
+// Gestiona datos básicos y estados de verificación
 
 namespace App\Models;
 
